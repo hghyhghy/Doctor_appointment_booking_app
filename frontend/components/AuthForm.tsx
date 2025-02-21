@@ -25,30 +25,37 @@ export default function AuthForm({ type }: { type: "login" | "register" }) {
     try {
       const endpoint = type === "login" ? "auth/login" : "auth/register";
       const payload = type === "login" 
-        ? { email: formData.email, password: formData.password }
+        ? { name: formData.name, password: formData.password }
         : formData;
-
+  
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`, payload);
-
-      if (type === "login") {
-        localStorage.setItem("token", res.data.access_token);
-        toast.success("Login successful!");
-        router.push("/dashboard");
-      } else {
-        toast.success("Registration successful! Please login.");
-        router.push("/login");
-      }
+  
+      // ✅ Store token for both login and registration
+      localStorage.setItem("token", res.data.access_token);
+  
+      toast.success(type === "login" ? "Login successful!" : "Registration successful!");
+  
+      // ✅ Redirect to dashboard after login and registration
+      router.push("/welcome");
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="flex w-full h-screen">
       {/* Form Section - Takes Half of the Screen */}
+      
       <div className="w-1/2 h-full  bg-black flex items-center justify-center p-8">
+      <div className=" flex flex-col gap-2 absolute top-24">
+                <h2 className=" font-bold text-3xl text-white">Hi There 👋🏻</h2>
+                <p className=" text-gray-300 text-sm">Get started with appointments</p>
+      </div>
+
+
         <div className="max-w-md w-full text-black">
           <h2 className="text-3xl font-semibold text-center mb-6 text-white">
             {type === "login" ? "Login" : "Register"}
