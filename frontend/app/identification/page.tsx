@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const IdentificationForm = () => {
+  const router = useRouter()
   const [identificationType, setIdentificationType] = useState("");
   const [identificationNumber, setIdentificationNumber] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -49,6 +51,7 @@ const IdentificationForm = () => {
       });
 
       if (response.ok) {
+        router.push("/appointment")
         setSuccessMessage("Identification details submitted successfully! ✅");
         setError("");
         setIdentificationType("");
