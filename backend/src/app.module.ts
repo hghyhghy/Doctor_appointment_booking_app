@@ -5,9 +5,10 @@ import { AuthModule } from './auth/auth.module';
 import { UserProfileModule } from './user-profile/user-profile.module';
 import { MedicalInfoModule } from './medical-info/medical-info.module';
 import { IdentificationModule } from './identification/identification.module';
+import { AppointmentModule } from './appointment/appointment.module';
 
 @Module({
-  imports: [AuthModule,UserProfileModule, MedicalInfoModule, IdentificationModule],
+  imports: [AuthModule,UserProfileModule, MedicalInfoModule, IdentificationModule, AppointmentModule],
   controllers: [AppController],
   providers: [AppService],
 })

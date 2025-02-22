@@ -17,10 +17,12 @@ model User {
   id          Int          @id @default(autoincrement())
   email       String       @unique
   password    String
+  phoneNumber String?
   name        String       @unique
   profile     UserProfile?
   medicalInfo MedicalInfo?
   identification Identification?
+  appointments   Appointment[]
 }
 
 model UserProfile {
@@ -63,3 +65,15 @@ model Identification {
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Appointment{
+
+  id Int @id @default(autoincrement())
+  userId Int @unique
+  preferredDoctor String
+  appointmentDate String
+  phoneNumber  String
+  reasons String
+  comments String?
+  createdAt DateTime @default(now())
+  user              User      @relation(fields: [userId], references: [id])
+}
