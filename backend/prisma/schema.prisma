@@ -20,6 +20,7 @@ model User {
   name        String       @unique
   profile     UserProfile?
   medicalInfo MedicalInfo?
+  identification Identification?
 }
 
 model UserProfile {
@@ -50,3 +51,15 @@ model MedicalInfo {
   createdAt               DateTime @default(now())
   user                    User     @relation(fields: [userId], references: [id])
 }
+
+model Identification {
+  
+  id Int @id @default(autoincrement())
+  userId Int @unique
+  identificationType String
+  identificationNumber Int
+  filePath String
+  createdAt DateTime @default(now())
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+

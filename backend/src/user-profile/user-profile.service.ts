@@ -19,7 +19,17 @@ export class UserProfileService {
             return await this.prisma.userProfile.update({
 
                 where:{userId:Number(userId)},
-                data:dto
+                data:{
+
+                    userId,
+                    name: dto.name,
+                    phoneNumber: dto.phoneNumber,
+                    dateOfBirth: new Date(dto.dateOfBirth), // ✅ Convert string to Date
+                    gender: dto.gender,
+                    address: dto.address,
+                    occupation: dto.occupation,
+                    emergencyContact: dto.emergencyContact,
+                }
             })
         }
         return await this.prisma.userProfile.create({
