@@ -140,7 +140,8 @@ const AdminDashboard = () => {
                     {appt.status.charAt(0).toUpperCase() + appt.status.slice(1)}
                   </span>
                 </td>
-                <td className="p-3">{moment(appt.appointmentDate).format("MMM D, YYYY, h:mm A")}</td>
+                <td className="p-3">{moment(appt.appointmentDate, "DD-MM-YYYY").format("MMM D, YYYY, h:mm A")
+                }</td>
                 <td className="p-3">{appt.preferredDoctor}</td>
                 <td className="p-3">
                   <button
