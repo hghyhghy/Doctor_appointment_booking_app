@@ -1,6 +1,6 @@
 
 
-import { Controller, Post, Get, Body, Req, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Body, Req, UseGuards, Patch, Param } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { Request } from 'express';
 import { CreateAppointmentDto } from './create-appointment.dto';
@@ -33,4 +33,36 @@ export class AppointmentController {
     
     }
 
+    @Get('counts')
+    // @UseGuards(JwtAuthGuard)
+    async getAppointmentCounts(){
+        const counts =  await this.appointmentService.getAppointmentCounts()
+        return counts
+    }
+
+    @Get('pending')
+    // @UseGuards(JwtAuthGuard)
+    async getPendingAppointments(){
+        const pending  =  await this.appointmentService.getPendingAppointments()
+        return pending 
+    }
+
+    @Get('all')
+    // @UseGuards(JwtAuthGuard)
+    async getScheduledAppointments(){
+        const pending  =  await this.appointmentService.getScheduledAppointments()
+        return pending 
+    }
+
+    @Patch('schedule/:userId')
+    async scheduleAppointments(@Param('userId') userId: string) {
+        const response = await this.appointmentService.scheduleAppointmentsForUser(Number(userId));
+        return response;
+    }
+    
+    @Patch('cancel/:userId')
+    async cancelAppointments(@Param('userId') userId: string) {
+        const response = await this.appointmentService.cancelAppointmentsForUser(Number(userId));
+        return response;
+    }
 }
