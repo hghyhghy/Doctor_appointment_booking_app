@@ -17,6 +17,7 @@ export default function ProfileForm() {
     emergencyContact: "",
   });
 
+  const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -26,6 +27,7 @@ export default function ProfileForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
+    
     try {
       const response = await fetch("http://localhost:3001/profile/create", {
         method: "POST",
@@ -37,13 +39,14 @@ export default function ProfileForm() {
       });
 
       if (response.ok) {
-        alert("Profile created successfully!");
-        router.push("/medicalinfo");
+        setMessage({ text: "Profile created successfully!", type: "success" });
+        setTimeout(() => router.push("/medicalinfo"), 2000);
       } else {
-        alert("Failed to create profile.");
+        setMessage({ text: "Failed to create profile. Please try again.", type: "error" });
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setMessage({ text: "An error occurred. Please try again later.", type: "error" });
     }
   };
 
@@ -63,8 +66,8 @@ export default function ProfileForm() {
       {/* Right Side: Form Section */}
       <div className="w-1/2 h-full flex items-center justify-center bg-[#0f172a] p-2">
         <div className="w-full p-8 bg-[#0f172a] rounded-lg shadow-lg text-gray-100">
-          <h2 className="text-2xl font-semibold text-center mb-6 flex items-start justify-start">Complete Your Profile</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <h2 className="text-2xl font-semibold text-center mb-6">Complete Your Profile</h2>
+          <form onSubmit={handleSubmit} className="space-y-4 text-white">
             
             {/* Name Field */}
             <div className="relative">
@@ -78,14 +81,13 @@ export default function ProfileForm() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full p-2 pl-10 border-2 rounded text-black border-blue-950 bg-[#0f172a]"
+                  className="w-full p-2 pl-10 border-2 rounded text-white border-blue-950 bg-[#0f172a]"
                 />
               </div>
             </div>
 
             {/* Address & Phone Number */}
             <div className="flex flex-row gap-3">
-              
               <div className="relative w-1/2">
                 <label className="block text-sm font-medium mb-2">Address</label>
                 <div className="relative">
@@ -97,7 +99,7 @@ export default function ProfileForm() {
                     value={formData.address}
                     onChange={handleChange}
                     required
-                    className="w-full p-2 pl-10 border-2 rounded text-black border-blue-950 bg-[#0f172a]"
+                    className="w-full p-2 pl-10 border-2 rounded text-white border-blue-950 bg-[#0f172a]"
                   />
                 </div>
               </div>
@@ -113,16 +115,14 @@ export default function ProfileForm() {
                     value={formData.phoneNumber}
                     onChange={handleChange}
                     required
-                    className="w-full p-2 pl-10 border-2 rounded text-black border-blue-950 bg-[#0f172a]"
+                    className="w-full p-2 pl-10 border-2 rounded text-white border-blue-950 bg-[#0f172a]"
                   />
                 </div>
               </div>
-
             </div>
 
             {/* Date of Birth & Gender */}
             <div className="flex flex-row gap-2">
-              
               <div className="w-1/2">
                 <label className="block text-sm font-medium mb-2">Date of Birth</label>
                 <input
@@ -150,12 +150,10 @@ export default function ProfileForm() {
                   <option value="Other">Other</option>
                 </select>
               </div>
-
             </div>
 
             {/* Occupation & Emergency Contact */}
             <div className="flex flex-row gap-2">
-              
               <div className="relative w-1/2">
                 <label className="block text-sm font-medium mb-2">Occupation</label>
                 <div className="relative">
@@ -167,7 +165,7 @@ export default function ProfileForm() {
                     value={formData.occupation}
                     onChange={handleChange}
                     required
-                    className="w-full p-2 pl-10 border-2 rounded text-black border-blue-950 bg-[#0f172a]"
+                    className="w-full p-2 pl-10 border-2 rounded text-white border-blue-950 bg-[#0f172a]"
                   />
                 </div>
               </div>
@@ -183,17 +181,23 @@ export default function ProfileForm() {
                     value={formData.emergencyContact}
                     onChange={handleChange}
                     required
-                    className="w-full p-2 pl-10 border-2 rounded text-black border-blue-950 bg-[#0f172a]"
+                    className="w-full p-2 pl-10 border-2 rounded text-white border-blue-950 bg-[#0f172a]"
                   />
                 </div>
               </div>
-
             </div>
 
             {/* Submit Button */}
             <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
               Submit
             </button>
+
+            {/* Message Display */}
+            {message && (
+              <div className={`mt-4 p-2 rounded text-center ${message.type === "success" ? "bg-green-500" : "bg-red-500"}`}>
+                {message.text}
+              </div>
+            )}
             
           </form>
         </div>

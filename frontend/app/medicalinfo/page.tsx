@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const MedicalInfoPage = () => {
-  const router = useRouter()
+  const router = useRouter();
   const physicianNames = [
     "Dr. John Smith",
     "Dr. Emily Johnson",
@@ -28,12 +28,15 @@ const MedicalInfoPage = () => {
     pastMedicalHistory: "",
   });
 
+  const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setMessage(null); // Clear previous messages
     const token = localStorage.getItem("token");
 
     try {
@@ -45,19 +48,16 @@ const MedicalInfoPage = () => {
         },
         body: JSON.stringify(formData),
       });
-      
-      if (response.ok){
-        router.push("/identification")
-      }
-      else{
-        throw new Error("Failed to submit medical information");
-        
-      }
 
-      alert("Medical information submitted successfully!");
+      if (response.ok) {
+        setMessage({ text: "Medical information submitted successfully!", type: "success" });
+        setTimeout(() => router.push("/identification"), 2000); // Redirect after 2 seconds
+      } else {
+        throw new Error("Failed to submit medical information");
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Error submitting medical information");
+      setMessage({ text: "Error submitting medical information. Please try again.", type: "error" });
     }
   };
 
@@ -66,7 +66,21 @@ const MedicalInfoPage = () => {
       {/* Medical Information Form - Left Half */}
       <div className="w-1/2 h-full flex items-center justify-center bg-[#0f172a] p-8">
         <div className="w-full max-w-2xl p-6 shadow-md rounded-lg text-slate-100">
-          <h2 className="text-2xl font-bold mb-6 text-center text-slate-300 flex items-start justify-start">Medical Information</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-slate-300 flex items-start justify-start">
+            Medical Information
+          </h2>
+
+          {/* Success/Error Message */}
+          {message && (
+            <div
+              className={`p-3 text-center mb-4 rounded ${
+                message.type === "success" ? "bg-green-600 text-white" : "bg-red-600 text-white"
+              }`}
+            >
+              {message.text}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-4 text-slate-100">
             {/* Physician Name Dropdown */}
             <div>

@@ -114,8 +114,16 @@ export default function AuthForm({ type }: { type: "login" | "register" }) {
               <>Already have an account? <button className="text-blue-600 hover:underline" onClick={() => router.push("/login")}>Login here</button></>
             )}
           </p>
+          
+      <button
+            onClick={() => router.push("/admin")}
+            className="w-full mt-6 bg-gray-700 text-white p-3 rounded hover:bg-gray-800 transition"
+          >
+            Admin
+          </button>
         </div>
       </div>
+
 
       {/* Image Section - Takes Half of the Screen */}
       <div className=" h-full w-1/2 ">
