@@ -42,7 +42,7 @@ export class AppointmentService {
             throw new Error("Invalid appointment date format. Expected formats: DD-MM-YYYY, DD.MM.YYYY, or YYYY-MM-DD.");
         }
 
-        const formattedDate = parsedDate.format("DD-MM-YYYY");
+        const formattedDate = parsedDate.toISOString(); 
         console.log("✅ Converted appointment date:", formattedDate);
 
         // ✅ Store the cleaned date string in the database
@@ -125,18 +125,12 @@ export class AppointmentService {
         })
     }
 
-    async getScheduledAppointments(){
+    async findAll(){
         return this.prisma.appointment.findMany({
-            where:{status:"pending"},
-            
             include:{
-                user:{
-                    select:{
-                        name:true,
-                        phoneNumber:true
-                    }
-                }
+                user:true
             }
+            
         })
     }
 

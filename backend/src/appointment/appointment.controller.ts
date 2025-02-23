@@ -50,8 +50,7 @@ export class AppointmentController {
     @Get('all')
     // @UseGuards(JwtAuthGuard)
     async getScheduledAppointments(){
-        const pending  =  await this.appointmentService.getScheduledAppointments()
-        return pending 
+        return await this.appointmentService.findAll()
     }
 
     @Patch('schedule/:userId')
