@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 
 const AdminDashboard = () => {
   interface Appointment {
@@ -51,10 +52,10 @@ const AdminDashboard = () => {
   };
   const handleAction = async (userId: number, action: "schedule" | "cancel") => {
     try {
-      // Optimistic UI update
+      // Optimistic UI update: Update status but keep all appointments
       setAppointments((prevAppointments) =>
         prevAppointments.map((appt) =>
-          appt.userId === userId ? { ...appt, status: action } : appt
+          appt.userId === userId ? { ...appt, status: action === "schedule" ? "scheduled" : "cancelled" } : appt
         )
       );
   
@@ -66,13 +67,13 @@ const AdminDashboard = () => {
           : prevCounts.schedule - 1, // Reduce if rescheduling
         cancelled: action === "cancel"
           ? prevCounts.cancelled + 1
-          : prevCounts.cancelled - 1, // Reduce if re-scheduling
+          : prevCounts.cancelled - 1, // Reduce if rescheduling
       }));
   
       // API Call
       await axios.patch(`http://localhost:3001/appointment/${action}/${userId}`, {});
   
-      // Fetch latest counts (optional, ensures backend sync)
+      // Fetch latest counts (ensures backend sync)
       fetchCounts();
     } catch (error) {
       console.error(`Error updating appointment:`, error);
@@ -82,6 +83,7 @@ const AdminDashboard = () => {
       fetchCounts();
     }
   };
+  
   
   
   

@@ -23,7 +23,7 @@ export default function AppointmentForm() {
   const router = useRouter()
   const [formData, setFormData] = useState({
     preferredDoctor: "",
-    expectedAppointmentDate: "",
+    appointmentDate: "",
     reasons: "",
     comments: "",
     phoneNumber: "",
@@ -55,20 +55,20 @@ export default function AppointmentForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage({ text: "", type: "" }); // Reset message before submitting
-
+  
     const token = localStorage.getItem("token");
-
+  
     if (!token) {
       setMessage({ text: "User not authenticated.", type: "error" });
       return;
     }
-
-    // Format date
-    const formattedDate = moment(formData.expectedAppointmentDate).format("DD-MM-YYYY HH:mm");
-
+  
+    // ✅ Correct date format for the backend
+    const formattedDate = moment(formData.appointmentDate).format("YYYY-MM-DD");
+  
     // Concatenate country code with phone number
     const fullPhoneNumber = `${countryCode} ${formData.phoneNumber}`;
-
+  
     try {
       const res = await fetch("http://localhost:3001/appointment/book", {
         method: "POST",
@@ -78,14 +78,14 @@ export default function AppointmentForm() {
         },
         body: JSON.stringify({
           ...formData,
-          appointmentDate: formattedDate,
-          phoneNumber: fullPhoneNumber, // Send full number
+          appointmentDate: formattedDate, // Send in correct format
+          phoneNumber: fullPhoneNumber,
         }),
       });
-
+  
       const data = await res.json();
       if (res.ok) {
-        router.push("/success")
+        router.push("/success");
         setMessage({ text: "Appointment booked successfully!", type: "success" });
       } else {
         setMessage({ text: data.message || "Something went wrong!", type: "error" });
@@ -95,6 +95,7 @@ export default function AppointmentForm() {
       console.error("Error:", error);
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
@@ -127,8 +128,8 @@ export default function AppointmentForm() {
             <label className="block text-gray-300 mb-1">Expected Appointment Date</label>
             <input
               type="date"
-              name="expectedAppointmentDate"
-              value={formData.expectedAppointmentDate}
+              name="appointmentDate"
+              value={formData.appointmentDate}
               onChange={handleChange}
               className="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               required
