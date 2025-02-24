@@ -23,34 +23,34 @@ export class AppointmentService {
         }
 
         if (!dto.appointmentDate || typeof dto.appointmentDate !== "string") {
-            console.error("❌ Appointment date is missing or not a string:", dto.appointmentDate);
+            console.error(" Appointment date is missing or not a string:", dto.appointmentDate);
             throw new Error("Appointment date is required and must be a string.");
         }
 
-        // ✅ Debug: Log the received appointment date
-        console.log("🟡 Received appointment date:", dto.appointmentDate);
+        //  Debug: Log the received appointment date
+        console.log("Received appointment date:", dto.appointmentDate);
 
-        // ✅ Supported date formats
+        // Supported date formats
         const dateFormats = ["DD-MM-YYYY", "DD.MM.YYYY", "YYYY-MM-DD"];
 
-        // ✅ Validate and normalize the date to "DD-MM-YYYY"
+        // Validate and normalize the date to "DD-MM-YYYY"
         const extractedDate = dto.appointmentDate.split(" ")[0]; 
 
         const parsedDate = moment(extractedDate, dateFormats, true);
         if (!parsedDate.isValid()) {
-            console.error("❌ Invalid date format:", extractedDate);
+            console.error("Invalid date format:", extractedDate);
             throw new Error("Invalid appointment date format. Expected formats: DD-MM-YYYY, DD.MM.YYYY, or YYYY-MM-DD.");
         }
 
         const formattedDate = parsedDate.toISOString(); 
-        console.log("✅ Converted appointment date:", formattedDate);
+        console.log("Converted appointment date:", formattedDate);
 
-        // ✅ Store the cleaned date string in the database
+        //  Store the cleaned date string in the database
         const appointment = await this.prisma.appointment.upsert({
             where: { userId: Number(userId) },
             update: {
                 preferredDoctor: dto.preferredDoctor,
-                appointmentDate: formattedDate, // ✅ Stored as "DD-MM-YYYY"
+                appointmentDate: formattedDate, //  Stored as "DD-MM-YYYY"
                 phoneNumber: dto.phoneNumber,
                 reasons: dto.reasons,
                 comments: dto.comments || null,
@@ -58,14 +58,13 @@ export class AppointmentService {
             create: {
                 userId,
                 preferredDoctor: dto.preferredDoctor,
-                appointmentDate: formattedDate, // ✅ Stored as "DD-MM-YYYY"
+                appointmentDate: formattedDate, //  Stored as "DD-MM-YYYY"
                 phoneNumber: dto.phoneNumber,
                 reasons: dto.reasons,
                 comments: dto.comments || null,
             },
         });
 
-        // ✅ Send SMS using the exact user-given date
         if (dto.phoneNumber) {
             await this.sendConfirmationSMS(dto.phoneNumber, user.id, dto.preferredDoctor, formattedDate);
         } else {
@@ -84,9 +83,9 @@ export class AppointmentService {
                 from: process.env.TWILIO_PHONE_NUMBER,
                 to: phoneNumber,
             });
-            console.log("✅ SMS sent successfully!");
+            console.log("SMS sent successfully!");
         } catch (error) {
-            console.error("❌ Error sending SMS:", error);
+            console.error("Error sending SMS:", error);
         }
     }
 
@@ -199,9 +198,9 @@ export class AppointmentService {
                 from: process.env.TWILIO_PHONE_NUMBER,
                 to: phoneNumber,
             });
-            console.log("✅ SMS sent successfully!");
+            console.log("SMS sent successfully!");
         } catch (error) {
-            console.error("❌ Error sending SMS:", error);
+            console.error("Error sending SMS:", error);
         }
     }
 }

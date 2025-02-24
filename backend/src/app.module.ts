@@ -9,9 +9,10 @@ import { AppointmentModule } from './appointment/appointment.module';
 import { AdminModule } from './admin/admin.module';
 import { ModuleController } from './module/module.controller';
 import { ReceiptModule } from './receipt/receipt.module';
+import { AiIntegrationModule } from './ai-integration/ai-integration.module';
 
 @Module({
-  imports: [AuthModule,UserProfileModule, MedicalInfoModule, IdentificationModule, AppointmentModule, AdminModule, ReceiptModule],
+  imports: [AuthModule,UserProfileModule, MedicalInfoModule, IdentificationModule, AppointmentModule, AdminModule, ReceiptModule, AiIntegrationModule],
   controllers: [AppController, ModuleController],
   providers: [AppService],
 })
