@@ -8,9 +8,10 @@ import { IdentificationModule } from './identification/identification.module';
 import { AppointmentModule } from './appointment/appointment.module';
 import { AdminModule } from './admin/admin.module';
 import { ModuleController } from './module/module.controller';
+import { ReceiptModule } from './receipt/receipt.module';
 
 @Module({
-  imports: [AuthModule,UserProfileModule, MedicalInfoModule, IdentificationModule, AppointmentModule, AdminModule],
+  imports: [AuthModule,UserProfileModule, MedicalInfoModule, IdentificationModule, AppointmentModule, AdminModule, ReceiptModule],
   controllers: [AppController, ModuleController],
   providers: [AppService],
 })

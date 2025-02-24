@@ -91,7 +91,16 @@ export class AppointmentService {
     }
 
     async getAppointments(userId: number) {
-        return this.prisma.appointment.findMany({ where: { userId } });
+        return this.prisma.appointment.findMany({ 
+            where: { userId },
+            select:{
+                id:true,
+                userId:true,
+                preferredDoctor:true,
+                appointmentDate:true,
+                reasons:true
+            }
+         });
     }
 
     async  getAppointmentCounts(){
