@@ -11,6 +11,7 @@ interface Appointment {
   preferredDoctor: string;
   appointmentDate: string;
   reasons: string;
+  userId: number; // Add this line
 }
 
 export default function AppointmentSuccessPage() {
@@ -80,6 +81,15 @@ export default function AppointmentSuccessPage() {
         >
           Back to Appointment Page
         </button>
+        {latestAppointment && (
+          <button
+          onClick={()=> router.push(`/receipt/${latestAppointment.userId}`)}
+           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md transition ml-5"
+          >
+            Print Receipt
+
+          </button>
+        )}
       </div>
     </div>
   );
