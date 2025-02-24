@@ -76,7 +76,7 @@ export class AppointmentService {
     }
 
     private async sendConfirmationSMS(phoneNumber: string, userId: number, doctor: string, appointmentDate: string) {
-        const message = `Hello! Your appointment (ID: ${userId}) with ${doctor} is confirmed on ${appointmentDate}.`;
+        const message = `Hello! Your appointment (ID: ${userId}) with ${doctor} is booked on ${appointmentDate}. wait till furhter confirmation`;
 
         try {
             await this.twilioClient.messages.create({
@@ -170,7 +170,7 @@ export class AppointmentService {
 
         await this.sendSms(
             appointments[0].phoneNumber || '',
-            `Dear ${appointments[0].userId}, all your appointments have been cancelled.`
+            `Dear ${appointments[0].userId},  your appointments have been cancelled.`
         );
 
         return { message: 'Appointments cancelled successfully' };

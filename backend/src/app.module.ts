@@ -6,10 +6,12 @@ import { UserProfileModule } from './user-profile/user-profile.module';
 import { MedicalInfoModule } from './medical-info/medical-info.module';
 import { IdentificationModule } from './identification/identification.module';
 import { AppointmentModule } from './appointment/appointment.module';
+import { AdminModule } from './admin/admin.module';
+import { ModuleController } from './module/module.controller';
 
 @Module({
-  imports: [AuthModule,UserProfileModule, MedicalInfoModule, IdentificationModule, AppointmentModule],
-  controllers: [AppController],
+  imports: [AuthModule,UserProfileModule, MedicalInfoModule, IdentificationModule, AppointmentModule, AdminModule],
+  controllers: [AppController, ModuleController],
   providers: [AppService],
 })
 export class AppModule {}
