@@ -3,6 +3,7 @@
 import { useState } from "react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
+import AI from "@/components/AI";
 
 // Country code options
 const countryCodes = [
@@ -211,6 +212,10 @@ export default function AppointmentForm() {
             {message.text}
           </div>
         )}
+      </div>
+
+      <div>
+        <AI/>
       </div>
     </div>
   );
